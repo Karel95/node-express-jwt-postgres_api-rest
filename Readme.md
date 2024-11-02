@@ -31,3 +31,11 @@ mkdir routes
 
 database:
   connection.db.js
+
+node database/connection.db.js
+
+models:
+  user.model.js
+
+controllers:
+  user.controller.js
