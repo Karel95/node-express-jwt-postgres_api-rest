@@ -16,8 +16,6 @@ try {
   console.error("Unable to connect to the database:", error);
 }
 
-await pool.end();
-
 export const client = new Client({
   allowExitOnIdle: true,
   connectionString,

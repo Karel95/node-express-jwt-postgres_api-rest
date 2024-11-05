@@ -39,3 +39,6 @@ models:
 
 controllers:
   user.controller.js
+
+routes:
+  user.route.js

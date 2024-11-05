@@ -1,15 +1,34 @@
 import {UserModel} from '../models/user.model.js';
 
+// /api/v1/users/register
 const register = async (req, res) => {
   try {
     console.log(req.body);
-    const { username, useremail, password } = req.body;
-    const user = await UserModel.createUser({ username, useremail, password });
+    const { username, email, password } = req.body;
 
-    return res.json({
+    //TODO: make all the validations:
+    // Check if email already exists
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'All fields are required'
+      });
+    }
+
+    const existingUser = await UserModel.getUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({
+        ok: false,
+        msg: 'Email already exists'
+      });
+    }
+
+    const newUser = await UserModel.createUser({ username, email, password });
+
+    return res.status(201).json({
       ok: true,
       msg: 'User registered successfully',
-      user
+      newUser
     });
   } catch (error) {
     console.log(error);
@@ -21,6 +40,7 @@ const register = async (req, res) => {
   }
 }
 
+// /api/v1/users/login
 const login = async (req, res) => {
   try {
     
