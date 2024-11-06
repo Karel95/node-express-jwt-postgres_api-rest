@@ -42,3 +42,8 @@ controllers:
 
 routes:
   user.route.js
+
+
+npm i bcryptjs
+
+npm i jsonwebtoken
