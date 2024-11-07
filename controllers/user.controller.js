@@ -66,6 +66,50 @@ const register = async (req, res) => {
 // /api/v1/users/login
 const login = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        ok: false,
+        msg: "All fields are required",
+      });
+    }
+
+    const user = await UserModel.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        msg: "User not found",
+      });
+    }
+
+    const validPassword = await bcryptjs.compare(password, user.password);
+
+    if (!validPassword) {
+      return res.status(401).json({
+        ok: false,
+        msg: "Invalid credentials",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Logged in successfully",
+      user,
+      token,
+    });
+
   } catch (error) {
     console.log(error);
 
