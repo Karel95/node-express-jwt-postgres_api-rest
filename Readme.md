@@ -47,3 +47,7 @@ routes:
 npm i bcryptjs
 
 npm i jsonwebtoken
+
+
+middlewares:
+  jwt.middleware.js

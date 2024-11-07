@@ -109,7 +109,6 @@ const login = async (req, res) => {
       user,
       token,
     });
-
   } catch (error) {
     console.log(error);
 
@@ -120,7 +119,27 @@ const login = async (req, res) => {
   }
 };
 
+// /api/v1/users/profile
+const profile = async (req, res) => {
+  try {
+    const user = await UserModel.getUserByEmail(req.user.email);
+
+    return res.status(200).json({
+      ok: true,
+      msg: "User profile",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Server error: " + error.message,
+    });
+  }
+};
+
 export const UserController = {
   register,
   login,
+  profile,
 };
